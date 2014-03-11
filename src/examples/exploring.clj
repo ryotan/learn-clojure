@@ -33,11 +33,14 @@
 (defn is-small? [number]
   (if (< number 100)
     "yes"
+    ; doがあるということは、何らかの副作用が発生することが期待される。
+    ; （最後のフォーム以外の返り値は無視されるから、最後以外のフォームが意味を持つには副作用を起こすしかない。）
     (do
       (println "Saw a big number" number)
       "no")))
 ; END:do
 (def is-small-with-do? is-small?)
+(is-small? 100)
 
 (defn demo-loop []
 ; START: loop
