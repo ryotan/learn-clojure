@@ -1,5 +1,7 @@
 ; START:ns
 (ns examples.exploring
+  ; :import, :require, :useが使えるらしい。
+  ; ちなみに、importはJavaクラスにしか使えないよ。
   (:require [clojure.string :as str])
   (:import (java.io File)))
 ; END:ns
