@@ -15,12 +15,17 @@
 ; START:if
 (defn is-small? [number]
   (if (< number 100) "yes"))
+(is-small? 50)
+; elseがないので、nilが返ってくる。
+(is-small? 100)
 ; END:if
 (def is-small-with-if? is-small?)
 
 ; START:if-else
 (defn is-small? [number]
   (if (< number 100) "yes" "no"))
+; elseの場合の式の値が返ってくる。
+(is-small? 100)
 ; END:if-else
 (def is-small-with-else? is-small?)
 
