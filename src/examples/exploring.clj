@@ -139,3 +139,19 @@
 
 (ellipsize "The quick brown fox jumps over the lazy dog.")
 ; END:ellipsize
+
+
+(defn indexed [coll] (map-indexed vector coll))
+
+(indexed "abcde")
+
+(defn index-filter [pred coll]
+  (when pred
+    (for [[idx elt] (indexed coll) :when (pred elt)] idx)))
+
+(index-filter #{\a \b} "abcde")
+
+(defn index-of-any [pred coll]
+  (first (index-filter pred coll)))
+
+(index-of-any #{\z \a} "z/os")
