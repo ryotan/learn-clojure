@@ -59,4 +59,18 @@
       rank (range 1 9)]
   (format "%c%d" file rank))
 
+(use 'examples.primes)
+
+(def ordinals-and-primes (map vector (iterate inc 1) primes))
+
+(take 10 (drop 10000 ordinals-and-primes))
+
+(def x (for [i (range 1 3)] (do (println i) i)))
+
+(doall x)
+
+(dorun x)
+
+
+
 
