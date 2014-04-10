@@ -71,6 +71,13 @@
 
 (dorun x)
 
+(re-seq #"\w+" "the quick brown fox")
+
+(sort (re-seq #"\w+" "the quick brown fox"))
+
+(drop 2 (re-seq #"\w" "the quick brown fox"))
+
+(map #(.toUpperCase %) (re-seq #"\w" "the quick brown fox"))
 
 
 
