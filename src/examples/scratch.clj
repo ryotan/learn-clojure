@@ -121,7 +121,31 @@
 (filter non-git? (file-seq (file ".")))
 
 (defn clojure-source? [file]
-  (.endsWith (.toString (file ".")) ".clj"))
+  (.endsWith (.toString file) ".clj"))
+
+(filter clojure-source? (file-seq (file ".")))
+
+
+(defn clojure-sloc [base-file]
+  (reduce
+   +
+   (for [file (file-seq base-file)
+         :when (and (non-git? file) (clojure-source? file))]
+     (with-open [rdr (reader file)]
+       (count (filter non-blank? (line-seq rdr)))))))
+
+(clojure-sloc (file "."))
+
+(use '[clojure.xml :only (parse)])
+
+(parse (file "data/sequences/compositions.xml"))
+
+(for [x (xml-seq (parse (file "data/sequences/compositions.xml")))
+      :when (= :composition (:tag x))]
+  (:composer (:attrs x)))
+
+
+
 
 
 
