@@ -79,5 +79,26 @@
 
 (map #(.toUpperCase %) (re-seq #"\w" "the quick brown fox"))
 
+(import '(java.io File))
+
+(seq (.listFiles (File. ".")))
+
+(map #(.getName %) (.listFiles (File. ".")))
+
+(count (file-seq (File. ".")))
+
+(use 'clojure.java.io)
+
+(count (file-seq (file ".")))
+
+(defn minutes-to-millis [mins]
+  (* mins 1000 60))
+
+(defn recently-modified? [file]
+  (> (.lastModified file)
+     (- (System/currentTimeMillis) (minutes-to-millis 30))))
+
+(filter recently-modified? (file-seq (file ".")))
+
 
 
