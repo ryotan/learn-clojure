@@ -100,5 +100,30 @@
 
 (filter recently-modified? (file-seq (file ".")))
 
+(use '[clojure.java.io :only (reader)]
+     '[clojure.java.io :only (writer)])
+
+(with-open [rdr (reader "src/examples/utils.clj")]
+  (count (line-seq rdr)))
+
+(with-open [rdr (reader "src/examples/utils.clj")]
+  (count (filter #(re-find #"\S+" %) (line-seq rdr))))
+
+(defn non-blank? [line]
+  (re-find #"\S+" line))
+
+(with-open [rdr (reader "src/examples/utils.clj")]
+  (count (filter non-blank? (line-seq rdr))))
+
+(defn non-git? [file]
+  (not (.contains (.toString file) ".git")))
+
+(filter non-git? (file-seq (file ".")))
+
+(defn clojure-source? [file]
+  (.endsWith (.toString (file ".")) ".clj"))
+
+
+
 
 
