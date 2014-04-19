@@ -24,6 +24,8 @@
 (def m-seq (map m (iterate inc 0)))
 (def f-seq (map f (iterate inc 0)))
 
-(nth m-seq 100000)
-(nth f-seq 100000)
+;(nth m-seq 100000)
+;(nth f-seq 100000)
+
+(nth m-seq 100)
 
