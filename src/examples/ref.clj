@@ -31,10 +31,41 @@
 (defn naive-add-message [msg]
   (dosync (ref-set messages (cons msg @messages))))
 
-;; alterを使って、メッセージのリストを更新する。（あまりうまくない。）
+;; alterを使って、メッセージのリストを更新する。
 (defn add-message [msg]
   (dosync (alter messages conj msg))) ; conj の第1引数に@messagesが渡される。
 
 (add-message (Message. "user 1" "hello"))
 (add-message (Message. "user 2" "hello"))
+
+;; commuteを使って、メッセージのリストを更新する。
+;; （commuteを使う場合、トランザクション内での実行タイミングを保証されない。）
+(defn add-message-commute [msg]
+  (dosync (commute messages conj msg)))
+
+(add-message-commute (Message. "user 3" "hello"))
+(add-message-commute (Message. "user 4" "hello"))
+
+(def counter (ref 0))
+
+(defn next-counter []
+  (dosync (alter counter inc)))
+
+(next-counter)
+(next-counter)
+
+;; Messageのバリデーション
+(def validate-message-list
+  (partial every? #(and (:sender %) (:text %))))
+
+;; validatorを指定して、refを作成する。
+(def messages (ref () :validator validate-message-list))
+
+(add-message {:sender "me" :text "hello"})
+(add-message (Message. "you" "hello"))
+
+;; validatorがfalseを返すと、messagesは更新されない。
+;; （messages更新のトランザクションがロールバックされる。）
+(add-message "not a valid")
+@messages
 
