@@ -94,6 +94,7 @@
   (assoc snake :direction new-direction))
 
 (defn reset-game
+  "ゲームを初期化する。"
   [snake apple]
   (dosync
    (ref-set apple (create-apple))
@@ -101,12 +102,14 @@
   nil)
 
 (defn update-direction
+  "ヘビの方向を変える。"
   [snake new-direction]
   (when new-direction
     (dosync
      (alter snake turn new-direction))))
 
 (defn update-positions
+  "ヘビの位置を更新する。"
   [snake apple]
   (dosync
    (if (eats? @snake @apple)
