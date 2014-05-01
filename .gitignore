@@ -12,3 +12,6 @@ lib/*
 classes/*
 target/
 .nrepl-port
+
+/keystore
+/vault-file
