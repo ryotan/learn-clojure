@@ -1,6 +1,8 @@
 (ns pinger.core
   (:import (java.net URL HttpURLConnection))
-  (:require [pinger.scheduler :as scheduler])
+  (:require [pinger.scheduler :as scheduler]
+            [clojure.tools.logging :as logger]
+            [pinger.config :as config])
   (:gen-class))
 
 (defn response-code [address]
@@ -13,12 +15,17 @@
 (defn available? [address]
   (= 200 (response-code address)))
 
+(defn record-availability [address]
+  (if (available? address)
+    (do
+      (logger/info (str address " is responding normally")))
+    (do
+      (logger/error (str address " is not available")))))
+
 (defn check []
-  (let [addresses '("https://google.com"
-                    "http://www.amazon.com"
-                    "https://google.com/badurl")]
+  (let [addresses (config/urls (config/config))]
     (doseq [address addresses]
-      (println (available? address)))))
+      (record-availability address))))
 
 (def immediately 0)
 (def every-minute (* 60 1000))
